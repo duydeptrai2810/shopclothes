@@ -7,7 +7,7 @@ USE shopclothes;
 
 -- 1. Bảng USER (Người dùng) 
 >>>>>>> origin/main
-CREATE TABLE USER (
+CREATE TABLE USERS (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -218,3 +218,7 @@ ADD COLUMN avatar_url VARCHAR(255) DEFAULT NULL;
 -- 2. Thêm cột trạng thái vào bảng BRAND (để API getActiveBrands hoạt động)
 ALTER TABLE BRAND 
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
+
+-- thêm cột refresh_token vào bảng USERS
+ALTER TABLE USERS
+ADD refresh_token VARCHAR(255);
