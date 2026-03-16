@@ -1,10 +1,9 @@
 import { useState, useContext } from "react"; // Đảm bảo import useContext
 import { AuthContext } from "../context/authContext";
 import { login as loginApi, register as registerApi } from "../api/authApi"; // Đổi tên để tránh trùng với hàm login của Context
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, Sparkles, ShoppingBag } from "lucide-react";
 import "./authPage.css";
-import { Link } from "react-router-dom";
 
 export default function AuthPage() {
     const [formData, setFormData] = useState({
@@ -180,7 +179,15 @@ export default function AuthPage() {
                                 <span className="checkmark"></span>
                                 {isLogin ? "Ghi nhớ đăng nhập" : "Tôi đồng ý với Điều khoản và Chính sách"}
                             </label>
-                            {isLogin && <a href="#" className="forgot-pw">Quên mật khẩu?</a>}
+                            {isLogin && (
+                                <span 
+                                    className="forgot-pw" 
+                                    onClick={() => navigate("/forgot-password")}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    Quên mật khẩu?
+                                </span>
+)}
                         </div>
 
                         <button type="submit" className="submit-btn" disabled={loading}>
