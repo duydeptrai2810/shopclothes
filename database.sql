@@ -3,7 +3,7 @@ use shopclothes;
 
 
 -- 1. Bảng USER (Người dùng) 
-CREATE TABLE USERS (
+CREATE TABLE USER (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -179,3 +179,16 @@ CREATE TABLE REVIEW (
     FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE,
     FOREIGN KEY (order_detail_id) REFERENCES ORDER_DETAIL(order_detail_id) ON DELETE SET NULL
 );
+
+
+-- 1. Thêm các cột phục vụ Xác thực và Profile vào bảng USER
+ALTER TABLE USER 
+ADD COLUMN refresh_token VARCHAR(255) DEFAULT NULL,
+ADD COLUMN reset_password_token VARCHAR(255) DEFAULT NULL,
+ADD COLUMN reset_password_expires DATETIME DEFAULT NULL,
+ADD COLUMN address TEXT DEFAULT NULL,
+ADD COLUMN avatar_url VARCHAR(255) DEFAULT NULL;
+
+-- 2. Thêm cột trạng thái vào bảng BRAND (để API getActiveBrands hoạt động)
+ALTER TABLE BRAND 
+ADD COLUMN is_active BOOLEAN DEFAULT 1;

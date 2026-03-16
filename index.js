@@ -3,6 +3,9 @@ const app = express();
 const port = 3000;
 require("./src/config/db");
 
+const cors = require('cors'); 
+app.use(cors()); 
+
 app.use(express.json());
 
 // Import các routes
@@ -21,3 +24,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server đang chạy tại http://localhost:${port}`);
 });
+
