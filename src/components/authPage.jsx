@@ -21,7 +21,6 @@ export default function AuthPage() {
     const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
-
     const { login: contextLogin } = useContext(AuthContext);
 
     const handleChange = (e) => {
@@ -273,10 +272,7 @@ export default function AuthPage() {
 
                         <div className="social-btns">
 
-                            <button
-                                type="button"
-                                className="social-btn google"
-                            >
+                            <button type="button" className="social-btn google">
                                 <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg"
                                     alt="Google"
@@ -284,17 +280,13 @@ export default function AuthPage() {
                                 Google
                             </button>
 
-                            <button
-                                type="button"
-                                className="social-btn facebook"
-                            >
+                            <button type="button" className="social-btn facebook">
                                 Facebook
                             </button>
 
                         </div>
 
                         <p className="toggle-auth">
-
                             {isLogin
                                 ? "Chưa có tài khoản? "
                                 : "Đã có tài khoản? "}
@@ -304,7 +296,6 @@ export default function AuthPage() {
                                     ? "Đăng ký ngay"
                                     : "Đăng nhập ngay"}
                             </span>
-
                         </p>
 
                     </form>

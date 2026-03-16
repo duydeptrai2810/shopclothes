@@ -45,6 +45,22 @@ export default function ForgotPasswordPage() {
         }
     };
 
+    // Hàm mới: Xử lý gửi lại mã
+    const handleResendEmail = async () => {
+        if (!email) return; // Nếu không có email thì không làm gì cả
+        
+        setLoading(true);
+        setMessage({ type: "", text: "" });
+        try {
+            const res = await forgotPassword(email);
+            setMessage({ type: "success", text: `Đã gửi lại mã mới! (Test token mới: ${res.resetToken})` });
+        } catch (error) {
+            setMessage({ type: "error", text: error.message });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="auth-container">
             <div className="auth-card" style={{ maxWidth: '450px', margin: '50px auto' }}>
@@ -80,6 +96,25 @@ export default function ForgotPasswordPage() {
                         <button type="submit" className="auth-submit-btn" disabled={loading}>
                             {loading ? "Đang xử lý..." : "Đặt lại mật khẩu"}
                         </button>
+
+                        <div style={{ marginTop: '15px', textAlign: 'center' }}>
+                            <span style={{ color: '#666', fontSize: '14px' }}>Chưa nhận được mã? </span>
+                            <span 
+                                onClick={!loading ? handleResendEmail : undefined} 
+                                style={{ 
+                                    color: loading ? '#999' : '#4f46e5', 
+                                    cursor: loading ? 'not-allowed' : 'pointer', 
+                                    fontWeight: '500', 
+                                    fontSize: '14px',
+                                    textDecoration: 'underline'
+                                }}
+                            >
+                                Gửi lại mã
+                            </span>
+                        </div>
+                        {/* ============================================== */}
+                        
+                    
                     </form>
                 )}
 
