@@ -67,6 +67,16 @@ export default function Navbar() {
                                         border: '1px solid #eee'
                                     }}>
                                         <div 
+                                                onClick={() => navigate('/profile')}
+                                                style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#333', padding: '10px', borderRadius: '4px', transition: '0.2s', fontWeight: 'normal' }}
+                                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                            >
+                                                <User size={18} />
+                                                <span>Hồ sơ cá nhân</span>
+                                        </div>
+
+                                        <div 
                                             onClick={handleLogout}
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ff3333', padding: '10px', borderRadius: '4px', transition: '0.2s', fontWeight: 'normal' }}
                                             onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fff0f0'}

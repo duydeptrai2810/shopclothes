@@ -4,6 +4,7 @@ import { login as loginApi, register as registerApi } from "../api/authApi"; // 
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, Sparkles, ShoppingBag } from "lucide-react";
 import "./authPage.css";
+import { Link } from "react-router-dom";
 
 export default function AuthPage() {
     const [formData, setFormData] = useState({
@@ -185,6 +186,12 @@ export default function AuthPage() {
                         <button type="submit" className="submit-btn" disabled={loading}>
                             {loading ? "Đang xử lý..." : (isLogin ? "Đăng nhập" : "Đăng ký")}
                         </button>
+
+                        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                            <Link to="/forgot-password" style={{ color: '#666', fontSize: '14px', textDecoration: 'none' }}>
+                                 Quên mật khẩu?
+                            </Link>
+                        </div>
 
                         {serverError && <p className="server-error">{serverError}</p>}
 
