@@ -36,11 +36,12 @@ export default function AuthPage() {
             // Gọi API
             const responseData = await loginApi(formData.email, formData.password);
             
-            // Lấy token từ đúng cấu trúc Backend trả về (responseData.data.accessToken)
+            // Lấy token VÀ user từ cấu trúc Backend trả về
             const token = responseData.data.accessToken; 
+            const user = responseData.data.user; 
             
-            // Cập nhật Token vào Context (Context sẽ tự lưu vào localStorage)
-            contextLogin(token); 
+            // Truyền cả 2 biến vào hàm login của Context
+            contextLogin(token, user); 
             
             alert("Đăng nhập thành công!");
             navigate("/dashboard");
