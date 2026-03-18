@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const db = require('../config/db');
-
+const nodemailer = require('nodemailer');
 const JWT_SECRET = process.env.JWT_SECRET || 'SECRET_KEY_CUA_BAN';
 const JWT_EXPIRATION = '1h';
 const REFRESH_TOKEN_EXPIRATION = '7d';
@@ -86,13 +86,13 @@ exports.forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
 
-        const [users] = await db.execute('SELECT user_id, email FROM USER WHERE email = ?', [email]);
+        const [users] = await db.execute('SELECT user_id, email, username FROM USER WHERE email = ?', [email]);
         if (users.length === 0) {
             throw new Error('Không tìm thấy tài khoản với email này!');
         }
 
         const user = users[0];
-        const resetToken = crypto.randomBytes(20).toString('hex');
+        const resetToken = crypto.randomBytes(20).toString('hex'); 
         const expireTime = new Date(Date.now() + 15 * 60 * 1000); 
 
         await db.execute(
@@ -100,11 +100,46 @@ exports.forgotPassword = async (req, res) => {
             [resetToken, expireTime, user.user_id]
         );
 
+        // ===============================================
+        // CẤU HÌNH TỔNG ĐÀI GỬI MAIL (NODEMAILER)
+        // ===============================================
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'duy12312328@gmail.com',        
+                pass: 'qnucolimviiyfvdu'             
+            }
+        });
+
+        const mailOptions = {
+            from: '"Fashion Hub Support" <duy12312328@gmail.com>', 
+            to: user.email, 
+            subject: 'Mã xác nhận khôi phục mật khẩu - Fashion Hub',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                    <h2 style="color: #4f46e5; text-align: center;">Fashion Hub</h2>
+                    <p>Xin chào <strong>${user.username || 'bạn'}</strong>,</p>
+                    <p>Bạn vừa yêu cầu khôi phục mật khẩu tài khoản tại Fashion Hub. Đây là mã xác nhận của bạn:</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <span style="background-color: #f3f4f6; color: #111; font-size: 24px; font-weight: bold; padding: 10px 20px; letter-spacing: 2px; border-radius: 5px;">
+                            ${resetToken}
+                        </span>
+                    </div>
+                    <p style="color: #ef4444; font-size: 14px;">* Mã này sẽ hết hạn sau 15 phút.</p>
+                    <p>Nếu bạn không yêu cầu đổi mật khẩu, vui lòng bỏ qua email này để bảo vệ tài khoản.</p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+                    <p style="font-size: 12px; color: #888; text-align: center;">Trân trọng,<br>Đội ngũ Fashion Hub</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
         res.status(200).json({ 
             success: true, 
-            message: 'Hướng dẫn khôi phục mật khẩu đã được gửi vào email của bạn!',
-            resetToken: resetToken 
+            message: 'Mã xác nhận đã được gửi vào hòm thư Gmail của bạn! Vui lòng kiểm tra (kể cả mục Spam).'
         });
+
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
