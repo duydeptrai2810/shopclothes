@@ -170,3 +170,56 @@ exports.changePassword = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
+const { OAuth2Client } = require('google-auth-library');
+// THAY CHUỖI CLIENT_ID CỦA BẠN VÀO ĐÂY:
+const client = new OAuth2Client('183837234413-fugqaldelm9s2b8kiho214aocs34osl2.apps.googleusercontent.com'); 
+
+exports.googleLogin = async (req, res) => {
+    try {
+        const { token } = req.body; // Frontend sẽ gửi token này lên
+
+        // 1. Nhờ Google xác minh xem token này có chuẩn không
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: '183837234413-fugqaldelm9s2b8kiho214aocs34osl2.apps.googleusercontent.com',
+        });
+        const payload = ticket.getPayload();
+        const { email, name, picture } = payload; // Lấy thông tin từ Google
+
+        // 2. Kiểm tra xem email này đã có trong Database của mình chưa
+        const [users] = await db.execute('SELECT * FROM USER WHERE email = ?', [email]);
+        let user;
+
+        if (users.length === 0) {
+            // NẾU CHƯA CÓ: Tự động tạo tài khoản mới cho họ
+            // Vì mật khẩu là bắt buộc trong DB, ta tạo 1 mật khẩu ngẫu nhiên rất dài mà họ không cần nhớ
+            const randomPassword = crypto.randomBytes(16).toString('hex');
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(randomPassword, salt);
+
+            const [result] = await db.execute(
+                `INSERT INTO USER (username, email, password_hash, full_name, avatar_url, role) VALUES (?, ?, ?, ?, ?, 'CUSTOMER')`,
+                [name, email, hashedPassword, name, picture]
+            );
+            user = { user_id: result.insertId, email: email, username: name, role: 'CUSTOMER' };
+        } else {
+            // NẾU ĐÃ CÓ: Lấy thông tin user đó ra
+            user = users[0];
+        }
+
+        // 3. Tạo Token của riêng trang web mình và cho phép đăng nhập
+        const jwtToken = generateToken(user.user_id, user.email, user.role);
+        const refreshToken = generateRefreshToken(user.user_id);
+
+        await db.execute('UPDATE USER SET refresh_token = ? WHERE user_id = ?', [refreshToken, user.user_id]);
+
+        res.status(200).json({
+            success: true,
+            message: 'Đăng nhập Google thành công!',
+            data: { accessToken: jwtToken, refreshToken, user: { id: user.user_id, username: user.username, email: user.email, role: user.role } }
+        });
+    } catch (error) {
+        res.status(400).json({ success: false, message: 'Xác thực Google thất bại: ' + error.message });
+    }
+};
