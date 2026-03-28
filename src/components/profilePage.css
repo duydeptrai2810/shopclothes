@@ -4,10 +4,10 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Header với Gradient */
 .profile-header {
+    margin-top: 50px;
     background: linear-gradient(to right, #9333ea, #db2777, #f97316);
-    height: 250px;
+    height: 150px;
     display: flex;
     align-items: center;
     padding: 0 10%;
@@ -28,20 +28,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid white;
 }
 
-/* Layout chính */
 .profile-main {
     max-width: 1200px;
-    margin: -50px auto 40px;
+    margin: 30px auto 40px;
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 30px;
     padding: 0 20px;
 }
 
-/* Sidebar & Cards */
 .sidebar-card, .content-card, .stats-card {
     background: white;
     border-radius: 12px;
@@ -53,6 +50,7 @@
     display: flex;
     flex-direction: column;
     padding: 15px 0;
+    padding: 10px 10px;
 }
 
 .menu-item {
@@ -67,6 +65,7 @@
     width: 100%;
     font-size: 15px;
     color: #4b5563;
+    border-radius: 8px;
 }
 
 .menu-item.active {
@@ -80,7 +79,6 @@
     border-top: 1px solid #eee;
 }
 
-/* Thống kê */
 .stats-card {
     margin-top: 20px;
     padding: 20px;

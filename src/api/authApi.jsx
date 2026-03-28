@@ -72,3 +72,14 @@ export const changePassword = async (token, oldPassword, newPassword) => {
   if (!res.ok) throw new Error(data.message || "Lỗi đổi mật khẩu!");
   return data;
 };
+
+export const googleLoginApi = async (token) => {
+    const res = await fetch(`${API_URL}/google-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Đăng nhập Google thất bại");
+    return data;
+};

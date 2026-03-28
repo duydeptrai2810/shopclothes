@@ -7,6 +7,8 @@ import "./App.css";
 import AuthPage from "./components/authPage";
 import Dashboard from "./components/dashboard";
 import ProtectedRoute from "./components/protectedRoute";
+import HomePage from './components/homePage.jsx'
+
 
 import ForgotPasswordPage from "./components/forgotPasswordPage";
 import ProfilePage from "./components/profilePage";
@@ -18,7 +20,7 @@ function App() {
 
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
