@@ -192,3 +192,4 @@ ADD COLUMN avatar_url VARCHAR(255) DEFAULT NULL;
 -- 2. Thêm cột trạng thái vào bảng BRAND (để API getActiveBrands hoạt động)
 ALTER TABLE BRAND 
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
+ALTER TABLE REVIEW ADD COLUMN is_hidden BOOLEAN DEFAULT 0;
