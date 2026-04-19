@@ -1,6 +1,7 @@
-create database if not exists shopclothes;
-use shopclothes;
 
+
+create database shopclo;
+use shopclo;
 
 -- 1. Bảng USER (Người dùng) 
 CREATE TABLE USER (
@@ -140,7 +141,7 @@ CREATE TABLE ORDERS (
     status VARCHAR(50) DEFAULT 'Pending', 
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE
 );
 
 -- 14. Bảng ORDER_DETAIL (Chi tiết hóa đơn) 
@@ -193,3 +194,6 @@ ADD COLUMN avatar_url VARCHAR(255) DEFAULT NULL;
 ALTER TABLE BRAND 
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
 ALTER TABLE REVIEW ADD COLUMN is_hidden BOOLEAN DEFAULT 0;
+
+ALTER TABLE USER ADD COLUMN is_active BOOLEAN DEFAULT 1;
+
