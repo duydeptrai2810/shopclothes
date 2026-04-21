@@ -1,4 +1,5 @@
 import Hero from "./hero";
+import {React, useState,useEffect} from "react";
 import Features from "./features";
 import ProductSection from "./productSection";
 import AISection from "./AISection";
@@ -32,7 +33,6 @@ export default function HomePage() {
         products={featuredProducts} // Dùng tạm data cũ
       />
       
-      {/* Thêm Footer ở đây nếu cần */}
     </div>
   );
 }

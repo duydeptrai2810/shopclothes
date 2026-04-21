@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
+// Import Link và useLocation
+import { Link, useLocation, useNavigate } from "react-router-dom"; 
 import { Home, LayoutGrid, Sparkles, User, ShoppingCart, ShoppingBag, LogOut } from "lucide-react";
 import { AuthContext } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
 import "./navbar.css";
 
 export default function Navbar() {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation(); // Hook để lấy thông tin đường dẫn hiện tại
     const [isHovered, setIsHovered] = useState(false);
 
     const handleLogout = () => {
@@ -14,34 +16,39 @@ export default function Navbar() {
         navigate("/auth");
     };
 
+    // Hàm kiểm tra xem một đường dẫn có đang "active" hay không
+    const isActive = (path) => {
+        return location.pathname === path ? "active" : "";
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-container">
 
-                <div className="navbar-logo" onClick={() => navigate("/")}>
+                <div className="navbar-logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                     <ShoppingBag className="logo-icon" size={32} />
                     <span className="logo-text">FASHION HUB</span>
                 </div>
 
                 <div className="navbar-links">
-                    <a href="/" className="nav-item active">
+                    {/* Sử dụng Link thay cho thẻ a để tránh load lại trang */}
+                    <Link to="/" className={`nav-item ${isActive("/")}`}>
                         <Home size={20} />
                         <span>Trang chủ</span>
-                    </a>
+                    </Link>
 
-                    <a href="/products" className="nav-item">
+                    <Link to="/products" className={`nav-item ${isActive("/products")}`}>
                         <LayoutGrid size={20} />
                         <span>Sản phẩm</span>
-                    </a>
+                    </Link>
 
-                    <a href="/ai-suggest" className="nav-item">
+                    <Link to="/ai-suggest" className={`nav-item ${isActive("/ai-suggest")}`}>
                         <Sparkles size={20} />
                         <span>Gợi ý AI</span>
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="navbar-actions">
-
                     {user ? (
                         <div
                             className="user-profile-menu"
@@ -82,6 +89,7 @@ export default function Navbar() {
                                     >
                                         <div
                                             onClick={() => navigate("/profile")}
+                                            className={`menu-item ${isActive("/profile")}`}
                                             style={{
                                                 display: "flex",
                                                 alignItems: "center",
@@ -117,23 +125,21 @@ export default function Navbar() {
                                             <LogOut size={18} />
                                             <span>Đăng xuất</span>
                                         </div>
-
                                     </div>
                                 </div>
                             )}
                         </div>
                     ) : (
-                        <a href="/auth" className="login-link">
+                        <Link to="/auth" className={`login-link ${isActive("/auth")}`}>
                             <User size={20} />
                             <span>Đăng nhập</span>
-                        </a>
+                        </Link>
                     )}
 
-                    <button className="cart-button">
+                    <button className="cart-button" onClick={() => navigate("/cart")}>
                         <ShoppingCart size={20} />
                         <span>Giỏ hàng</span>
                     </button>
-
                 </div>
             </div>
         </nav>

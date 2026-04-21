@@ -1,0 +1,146 @@
+.featured-section {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.section-subtitle {
+    color: #666;
+    font-size: 16px;
+}
+
+.view-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #7c3aed; /* Màu tím highlight */
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.view-all-btn:hover {
+    gap: 10px;
+    opacity: 0.8;
+}
+
+/* Grid layout */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+/* Card Style */
+.product-card {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.product-image {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 16px; /* Bo góc như hình mẫu */
+    overflow: hidden;
+    background-color: #f3f4f6;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.08);
+}
+
+/* Nút hiện khi hover */
+.hover-action {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    transition: 0.3s;
+    background: linear-gradient(transparent, rgba(0,0,0,0.4));
+}
+
+.product-card:hover .hover-action {
+    bottom: 0;
+}
+
+.add-to-cart-quick {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Thông tin chữ */
+.product-details {
+    padding: 15px 5px;
+}
+
+.brand-category {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.category-tag {
+    font-size: 13px;
+    color: #999;
+}
+
+.brand-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #7c3aed;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #7c3aed;
+}
