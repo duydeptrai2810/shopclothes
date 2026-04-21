@@ -200,3 +200,36 @@ exports.deleteVariant = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
+exports.uploadProductImages = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const files = req.files; // Lấy danh sách file do Multer xử lý
+
+        if (!files || files.length === 0) {
+            throw new Error('Vui lòng chọn ít nhất 1 hình ảnh!');
+        }
+
+        // Kiểm tra xem sản phẩm có tồn tại không
+        const [products] = await db.execute('SELECT product_id FROM PRODUCT WHERE product_id = ?', [productId]);
+        if (products.length === 0) throw new Error('Sản phẩm không tồn tại!');
+
+        // Lặp qua từng file và lưu vào database
+        let uploadedImages = [];
+        for (let i = 0; i < files.length; i++) {
+            const imageUrl = `/uploads/products/${files[i].filename}`;
+            // Ảnh đầu tiên được mặc định là ảnh chính (is_primary = 1) nếu chưa có ảnh nào
+            const isPrimary = i === 0 ? 1 : 0; 
+
+            await db.execute(
+                'INSERT INTO PRODUCT_IMAGES (product_id, image_url, is_primary) VALUES (?, ?, ?)',
+                [productId, imageUrl, isPrimary]
+            );
+            uploadedImages.push(imageUrl);
+        }
+
+        res.status(200).json({ success: true, message: 'Đã tải ảnh lên thành công!', data: uploadedImages });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};

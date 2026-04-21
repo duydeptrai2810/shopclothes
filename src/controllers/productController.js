@@ -64,8 +64,8 @@ exports.getProducts = async (req, res) => {
         queryParams.push(limitNum, offset);
 
         // Thực thi truy vấn
-        const [products] = await db.execute(query, queryParams);
-        const [totalRows] = await db.execute(countQuery, countParams);
+        const [products] = await db.query(query, queryParams);
+        const [totalRows] = await db.query(countQuery, countParams);
         const totalProducts = totalRows[0].total;
 
         res.status(200).json({
@@ -115,8 +115,8 @@ exports.searchProducts = async (req, res) => {
             WHERE p.is_active = 1 AND (p.name LIKE ? OR p.description LIKE ?)
         `;
 
-        const [products] = await db.execute(query, [searchKeyword, searchKeyword, limitNum, offset]);
-        const [totalRows] = await db.execute(countQuery, [searchKeyword, searchKeyword]);
+        const [products] = await db.query(query, [searchKeyword, searchKeyword, limitNum, offset]);
+        const [totalRows] = await db.query(countQuery, [searchKeyword, searchKeyword]);
 
         res.status(200).json({
             success: true,
