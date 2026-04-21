@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { login, register } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
-export default function AuthPage() {
+export default function authPage() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",

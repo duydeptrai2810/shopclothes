@@ -286,3 +286,48 @@
   margin-top: 4px;
   display: block;
 }
+/* Style cho thông báo Success/Error */
+.message-banner {
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.message-banner.success {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #10b981;
+}
+
+.message-banner.error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #ef4444;
+}
+
+/* Hiệu ứng cho nút Gửi lại mã */
+.toggle-auth span {
+  transition: all 0.2s;
+  text-decoration: underline;
+}
+
+.toggle-auth span:hover {
+  color: #ff007f; /* Đổi sang màu hồng gradient khi hover */
+}
+
+/* Đảm bảo nút quay lại có style đẹp */
+.auth-footer .forgot-pw:hover {
+  text-decoration: underline;
+  transform: translateX(-3px);
+  transition: 0.3s;
+}
+
+/* Điều chỉnh khi ở màn hình nhỏ */
+@media (max-width: 768px) {
+  .auth-info-section {
+    display: none; /* Ẩn phần màu tím bên phải trên mobile */
+  }
+}
