@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://localhost:3000/api/cart";
 
 // 1. Lấy danh sách sản phẩm trong giỏ hàng
 // Khớp với: router.get('/', cartController.getCart);

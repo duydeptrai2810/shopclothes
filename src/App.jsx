@@ -14,6 +14,8 @@ import CartPage from "./components/CartPage.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import ProductsPage from "./components/ProductsPage.jsx";
 import AISuggestionPage from "./components/AISuggestionPage.jsx";
+import CheckoutPage from './components/CheckoutPage';
+
 function App() {
   return (
     <>
@@ -28,7 +30,8 @@ function App() {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/ai-suggest" element={<AISuggestionPage />} />
         <Route path="/cart" element={<CartPage />} />
-
+        <Route path="/checkout" element={<CheckoutPage />} />
+        
         {/* Protected routes */}
         <Route
           path="/dashboard"

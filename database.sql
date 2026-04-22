@@ -1,13 +1,8 @@
 CREATE DATABASE IF NOT EXISTS shopclothes;
 USE shopclothes;
 
-<<<<<<< HEAD
 -- 1. Bảng USER (Người dùng)
-=======
-
--- 1. Bảng USER (Người dùng) 
->>>>>>> origin/main
-CREATE TABLE USERS (
+CREATE TABLE USER (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -220,5 +215,5 @@ ALTER TABLE BRAND
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
 
 -- thêm cột refresh_token vào bảng USERS
-ALTER TABLE USERS
+ALTER TABLE USER
 ADD refresh_token VARCHAR(255);

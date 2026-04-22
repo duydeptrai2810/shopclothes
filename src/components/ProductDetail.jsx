@@ -5,6 +5,8 @@ import { getProductDetail } from "../api/productApi";
 import { addToCart } from "../api/cartApi";
 import { AuthContext } from "../context/authContext";
 import "./productDetail.css";
+import ProductReviews from "./ProductReviews";
+import { trackUserAction } from "../api/aiApi";
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -33,6 +35,9 @@ export default function ProductDetail() {
                     if (variants.length > 0) {
                         setSelectedSize(variants[0].size);
                     }
+                    if (token) {
+                    trackUserAction(token, id, "VIEW").catch(err => console.log(err));
+                }
                 }
             } catch (error) {
                 console.error("Lỗi khi tải chi tiết sản phẩm:", error);
