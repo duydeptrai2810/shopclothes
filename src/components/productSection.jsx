@@ -54,7 +54,7 @@ export default function ProductSection() {
                                 />
                                 <div className="hover-action">
                                     <button className="add-to-cart-quick">
-                                        <ShoppingCart size={18} /> Thêm vào giỏ
+                                         Xem chi tiết
                                     </button>
                                 </div>
                             </div>

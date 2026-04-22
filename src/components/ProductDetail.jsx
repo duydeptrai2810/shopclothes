@@ -1,78 +1,122 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { ShoppingCart, Heart, ShieldCheck, Truck } from "lucide-react";
 import { getProductDetail } from "../api/productApi";
+import { addToCart } from "../api/cartApi";
+import { AuthContext } from "../context/authContext";
 import "./productDetail.css";
 
 export default function ProductDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
+    
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedSize, setSelectedSize] = useState("");
+    const [selectedSize, setSelectedSize] = useState(""); 
     const [quantity, setQuantity] = useState(1);
+    const [adding, setAdding] = useState(false);
 
     useEffect(() => {
         const fetchDetail = async () => {
-            const res = await getProductDetail(id);
-            if (res.success) {
-                setProduct(res.data);
-                // Mặc định chọn size đầu tiên nếu có
-                if (res.data.variants.length > 0) {
-                    setSelectedSize(res.data.variants[0].size);
+            try {
+                const res = await getProductDetail(id);
+                console.log("Dữ liệu gốc từ API:", res); // LOG ĐỂ KIỂM TRA
+
+                if (res.success && res.data) {
+                    setProduct(res.data);
+                    
+                    // Lấy danh sách biến thể (variants)
+                    const variants = res.data.variants || [];
+                    
+                    // Nếu có biến thể, mặc định chọn size của biến thể đầu tiên
+                    if (variants.length > 0) {
+                        setSelectedSize(variants[0].size);
+                    }
                 }
+            } catch (error) {
+                console.error("Lỗi khi tải chi tiết sản phẩm:", error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
         fetchDetail();
     }, [id]);
 
+    const handleAddToCart = async () => {
+        if (!token) {
+            alert("Vui lòng đăng nhập!");
+            return navigate("/auth");
+        }
+
+        // Tìm variant_id từ size đang chọn
+        const variant = product.variants.find(v => v.size === selectedSize);
+
+        if (!variant) {
+            return alert("Vui lòng chọn kích thước!");
+        }
+
+        setAdding(true);
+        try {
+            const res = await addToCart(token, {
+                variantId: variant.variant_id,
+                quantity: quantity
+            });
+            if (res.success) {
+                alert("Đã thêm vào giỏ hàng thành công!");
+            }
+        } catch (error) {
+            alert("Lỗi server!");
+        } finally {
+            setAdding(false);
+        }
+    };
+
     if (loading) return <div className="loading">Đang tải...</div>;
-    if (!product) return <div className="error">Sản phẩm không tồn tại!</div>;
+    if (!product || !product.info) return <div className="error">Sản phẩm không tồn tại!</div>;
 
     const { info, images, variants } = product;
 
     return (
         <div className="product-detail-container">
             <div className="product-detail-grid">
-                {/* Cột trái: Hình ảnh */}
                 <div className="product-images-section">
                     <div className="main-image">
                         <img src={images[0]?.image_url} alt={info.name} />
                     </div>
-                    <div className="thumbnail-list">
-                        {images.map((img, index) => (
-                            <img key={index} src={img.image_url} alt="thumbnail" />
-                        ))}
-                    </div>
                 </div>
 
-                {/* Cột phải: Thông tin */}
                 <div className="product-info-section">
                     <span className="brand-badge">{info.brand_name}</span>
                     <h1 className="product-title">{info.name}</h1>
-                    <p className="product-category">{info.category_name} | {info.material || "Chất liệu cao cấp"}</p>
                     
                     <div className="price-tag">
                         {new Intl.NumberFormat("vi-VN").format(info.base_price)} ₫
                     </div>
 
+                    {/* --- PHẦN KÍCH THƯỚC (QUAN TRỌNG) --- */}
                     <div className="selection-group">
-                        <label>Chọn kích thước:</label>
+                        <p className="label">Kích thước: <strong>{selectedSize || "Chưa chọn"}</strong></p>
                         <div className="size-options">
-                            {[...new Set(variants.map(v => v.size))].map(size => (
-                                <button 
-                                    key={size}
-                                    className={`size-btn ${selectedSize === size ? "active" : ""}`}
-                                    onClick={() => setSelectedSize(size)}
-                                >
-                                    {size}
-                                </button>
-                            ))}
+                            {variants && variants.length > 0 ? (
+                                // Loại bỏ các size trùng nhau nếu có nhiều màu
+                                [...new Set(variants.map(v => v.size))].map(size => (
+                                    <button 
+                                        key={size}
+                                        className={`size-btn ${selectedSize === size ? "active" : ""}`}
+                                        onClick={() => setSelectedSize(size)}
+                                    >
+                                        {size}
+                                    </button>
+                                ))
+                            ) : (
+                                <p className="no-data">Sản phẩm này hiện chưa có size.</p>
+                            )}
                         </div>
                     </div>
 
                     <div className="quantity-control">
-                        <label>Số lượng:</label>
+                        <p className="label">Số lượng:</p>
                         <div className="qty-input">
                             <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
                             <span>{quantity}</span>
@@ -81,28 +125,9 @@ export default function ProductDetail() {
                     </div>
 
                     <div className="action-buttons">
-                        <button className="add-to-cart-btn">
-                            <ShoppingCart size={20} /> Thêm vào giỏ hàng
+                        <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={adding}>
+                            <ShoppingCart size={20} /> {adding ? "Đang xử lý..." : "Thêm vào giỏ hàng"}
                         </button>
-                        <button className="wishlist-btn">
-                            <Heart size={20} />
-                        </button>
-                    </div>
-
-                    <div className="policy-highlights">
-                        <div className="policy-item">
-                            <Truck size={20} />
-                            <span>Giao hàng miễn phí toàn quốc</span>
-                        </div>
-                        <div className="policy-item">
-                            <ShieldCheck size={20} />
-                            <span>Bảo hành chính hãng 12 tháng</span>
-                        </div>
-                    </div>
-
-                    <div className="product-description">
-                        <h3>Mô tả sản phẩm</h3>
-                        <p>{info.description || "Chưa có mô tả cho sản phẩm này."}</p>
                     </div>
                 </div>
             </div>

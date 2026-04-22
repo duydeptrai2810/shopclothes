@@ -8,12 +8,12 @@ import AuthPage from "./components/authPage";
 import Dashboard from "./components/dashboard";
 import ProtectedRoute from "./components/protectedRoute";
 import HomePage from './components/homePage.jsx'
-import AIPage from "./components/AIPage.jsx";
 import ForgotPasswordPage from "./components/forgotPasswordPage";
 import ProfilePage from "./components/profilePage";
 import CartPage from "./components/CartPage.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import ProductsPage from "./components/ProductsPage.jsx";
+import AISuggestionPage from "./components/AISuggestionPage.jsx";
 function App() {
   return (
     <>
@@ -26,7 +26,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/ai-suggest" element={<AIPage />} />
+        <Route path="/ai-suggest" element={<AISuggestionPage />} />
         <Route path="/cart" element={<CartPage />} />
 
         {/* Protected routes */}
