@@ -24,6 +24,7 @@ const adminDashboardRoutes = require('./src/routes/adminDashboardRoutes');
 const recommendationRoutes = require('./src/routes/recommendationRoutes');
 const productRoutes = require('./src/routes/productRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
+const catalogRoutes = require('./src/routes/catalogRoutes');
 
 // Định tuyến API
 app.use('/api/auth', authRoutes);
@@ -38,6 +39,7 @@ app.use('/api/admin/dashboard', adminDashboardRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/catalog', catalogRoutes);
 
 app.get('/', (req, res) => {
   res.send('Chào mừng bạn đến với Backend Website Bán Quần Áo!');
