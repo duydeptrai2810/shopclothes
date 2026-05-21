@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
-// Import Link và useLocation
 import { Link, useLocation, useNavigate } from "react-router-dom"; 
-import { Home, LayoutGrid, Sparkles, User, ShoppingCart, ShoppingBag, LogOut } from "lucide-react";
+// Thêm icon ShieldCheck cho Admin
+import { Home, LayoutGrid, Sparkles, User, ShoppingCart, ShoppingBag, LogOut, ShieldCheck } from "lucide-react";
 import { AuthContext } from "../context/authContext";
 import "./navbar.css";
 
 export default function Navbar() {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
-    const location = useLocation(); // Hook để lấy thông tin đường dẫn hiện tại
+    const location = useLocation();
     const [isHovered, setIsHovered] = useState(false);
 
     const handleLogout = () => {
@@ -16,7 +16,7 @@ export default function Navbar() {
         navigate("/auth");
     };
 
-    // Hàm kiểm tra xem một đường dẫn có đang "active" hay không
+    // Hàm kiểm tra đường dẫn đang hoạt động
     const isActive = (path) => {
         return location.pathname === path ? "active" : "";
     };
@@ -25,13 +25,14 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="navbar-container">
 
+                {/* LOGO */}
                 <div className="navbar-logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                     <ShoppingBag className="logo-icon" size={32} />
                     <span className="logo-text">FASHION HUB</span>
                 </div>
 
+                {/* LINKS CHÍNH */}
                 <div className="navbar-links">
-                    {/* Sử dụng Link thay cho thẻ a để tránh load lại trang */}
                     <Link to="/" className={`nav-item ${isActive("/")}`}>
                         <Home size={20} />
                         <span>Trang chủ</span>
@@ -48,6 +49,7 @@ export default function Navbar() {
                     </Link>
                 </div>
 
+                {/* ACTIONS (USER & CART) */}
                 <div className="navbar-actions">
                     {user ? (
                         <div
@@ -67,6 +69,7 @@ export default function Navbar() {
                             <User size={20} />
                             <span>{user.username}</span>
 
+                            {/* DROPDOWN MENU */}
                             {isHovered && (
                                 <div
                                     style={{
@@ -75,7 +78,7 @@ export default function Navbar() {
                                         right: "0",
                                         paddingTop: "15px",
                                         zIndex: 1000,
-                                        minWidth: "150px"
+                                        minWidth: "180px"
                                     }}
                                 >
                                     <div
@@ -87,6 +90,30 @@ export default function Navbar() {
                                             border: "1px solid #eee"
                                         }}
                                     >
+                                        {/* 1. Nút Trang quản trị (Chỉ dành cho ADMIN) */}
+                                        {(user.role === 'ADMIN' || user.role === 'admin') && (
+                                            <div
+                                                onClick={() => navigate("/admin")}
+                                                className={`menu-item ${isActive("/admin")}`}
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "8px",
+                                                    color: "#9c27b0", // Màu tím nổi bật cho Admin
+                                                    padding: "10px",
+                                                    borderRadius: "4px",
+                                                    transition: "0.2s",
+                                                    fontWeight: "600"
+                                                }}
+                                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f3e8ff"}
+                                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                                            >
+                                                <ShieldCheck size={18} />
+                                                <span>Trang quản trị</span>
+                                            </div>
+                                        )}
+
+                                        {/* 2. Nút Hồ sơ cá nhân */}
                                         <div
                                             onClick={() => navigate("/profile")}
                                             className={`menu-item ${isActive("/profile")}`}
@@ -107,6 +134,7 @@ export default function Navbar() {
                                             <span>Hồ sơ cá nhân</span>
                                         </div>
 
+                                        {/* 3. Nút Đăng xuất */}
                                         <div
                                             onClick={handleLogout}
                                             style={{
@@ -117,7 +145,9 @@ export default function Navbar() {
                                                 padding: "10px",
                                                 borderRadius: "4px",
                                                 transition: "0.2s",
-                                                fontWeight: "normal"
+                                                fontWeight: "normal",
+                                                borderTop: "1px solid #eee",
+                                                marginTop: "5px"
                                             }}
                                             onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#fff0f0"}
                                             onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
@@ -130,12 +160,14 @@ export default function Navbar() {
                             )}
                         </div>
                     ) : (
+                        /* CHƯA ĐĂNG NHẬP */
                         <Link to="/auth" className={`login-link ${isActive("/auth")}`}>
                             <User size={20} />
                             <span>Đăng nhập</span>
                         </Link>
                     )}
 
+                    {/* NÚT GIỎ HÀNG */}
                     <button className="cart-button" onClick={() => navigate("/cart")}>
                         <ShoppingCart size={20} />
                         <span>Giỏ hàng</span>

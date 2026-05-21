@@ -134,7 +134,7 @@ export default function AuthPage() {
                                 <div className="input-group">
                                     <label>Họ và tên</label>
                                     <div className="input-wrapper">
-                                        <User className="input-icon" size={18} />
+                                        
                                         <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Nguyễn Văn A" />
                                     </div>
                                     {errors.name && <span className="error-text">{errors.name}</span>}
@@ -144,7 +144,7 @@ export default function AuthPage() {
                             <div className="input-group">
                                 <label>Email</label>
                                 <div className="input-wrapper">
-                                    <Mail className="input-icon" size={18} />
+                                    
                                     <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" />
                                 </div>
                                 {errors.email && <span className="error-text">{errors.email}</span>}
@@ -153,7 +153,7 @@ export default function AuthPage() {
                             <div className="input-group">
                                 <label>Mật khẩu</label>
                                 <div className="input-wrapper">
-                                    <Lock className="input-icon" size={18} />
+                                    
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         name="password"
@@ -173,7 +173,7 @@ export default function AuthPage() {
                                 <div className="input-group">
                                     <label>Xác nhận mật khẩu</label>
                                     <div className="input-wrapper">
-                                        <Lock className="input-icon" size={18} />
+                                        
                                         <input type="password" name="confirmpassword" value={formData.confirmpassword} onChange={handleChange} placeholder="••••••••" />
                                     </div>
                                     {errors.confirmpassword && <span className="error-text">{errors.confirmpassword}</span>}

@@ -14,38 +14,32 @@ export const orderApi = {
     }
 };
 
-export const previewCheckout = async (token) => {
-    const res = await fetch(`${API_URL}/checkout/preview`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}` }
-    });
-    return await res.json();
-}
+// Gộp các hàm vào một hằng số duy nhất tên là orderApi
+export const orderApi = {
+    previewCheckout: async (token) => {
+        const res = await fetch(`${API_URL}/checkout/preview`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        return await res.json();
+    },
 
-export const placeOrder = async (token, orderData) => {
-    const res = await fetch(`${API_URL}/orders`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(orderData)
-    });
-    return await res.json();
-}
+    placeOrder: async (token, orderData) => {
+        const res = await fetch(`${API_URL}/orders`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(orderData)
+        });
+        return await res.json();
+    },
 
-export const getMyOrders = async (token) => {
-    const res = await fetch(`${API_URL}/orders`, {
-        headers: { "Authorization": `Bearer ${token}` }
-    });
-    return await res.json();
-}
-
-// Payment Intent (Module 3.6)
-export const createPaymentIntent = async (token) => {
-    const res = await fetch(`${API_URL}/payments/intent`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}` }
-    });
-    return await res.json();
-}
+    getMyOrders: async (token) => {
+        const res = await fetch(`${API_URL}/orders`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        return await res.json();
+    }
+};

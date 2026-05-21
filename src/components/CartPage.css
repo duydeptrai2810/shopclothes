@@ -190,6 +190,8 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 .qty-controls span {
@@ -371,4 +373,6 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-left: 70px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
